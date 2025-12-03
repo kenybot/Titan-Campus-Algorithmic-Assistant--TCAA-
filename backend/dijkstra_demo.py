@@ -12,8 +12,8 @@ def dijkstra(graph, start):
     heappush(pq, (0,start))
     visited = set()
 
-    while pq:
-        current_dist, u = heappop(pq)
+    while pq: #while the list is not empty
+        current_dist, u = heappop(pq) 
         if u in visited:
             continue
         visited.add(u)

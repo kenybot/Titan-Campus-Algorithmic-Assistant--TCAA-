@@ -19,6 +19,7 @@ from tkinter import *
 from tkinter import messagebox
 import random
 
+from heapq import heappush, heappop
 #global variables
 campus_buildings = [
     ("AF", "Anderson Field"),
@@ -221,6 +222,35 @@ class NodeManager:
                     stack.append((neighbor, path_edges + [edge], path_nodes + [neighbor]))
 
         messagebox.showinfo("No Path", "No path found.")
+
+    def dijkstra(self, start_name, goal_name):
+        for edge in self.edges:
+            edge.update_state()
+        
+        start = next((n for n in self.nodes if n.text == start_name), None)
+        goal = next((n for n in self.nodes if n.text == goal_name), None)
+
+        if not start or not goal:
+            messagebox.showerror("Invalid", "Start or goal node not found.")
+            return
+        pq = [(0,start, [], [start])]
+        visited = set()
+
+        while pq:
+            current_dist, current, path_edges, path_nodes = heappop(pq)
+
+            if current in visited:
+                continue
+            visited.add(current)
+                
+            if current == goal:
+                print("STOP")
+            
+        
+
+
+        
+
 
 
 
