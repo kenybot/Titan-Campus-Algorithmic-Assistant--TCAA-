@@ -4,7 +4,11 @@ from PIL import Image, ImageTk
 from backend.campus_navigator.node_manager import NodeManager
 from backend.campus_navigator import ui_helpers
 
+#sounds
+import pygame
+
 import os
+
 
 
 class Sidebar(tk.Frame):
@@ -12,6 +16,10 @@ class Sidebar(tk.Frame):
         super().__init__(master, width=185, height=720, bg="#0B1D3A", **kwargs)
         self.pack(side=tk.LEFT)
         self.pack_propagate(False)
+
+        #Initialize pygame
+        pygame.mixer.init()
+
 
         #colors
         self.FRAME_COLOR = "#0B1D3A"
@@ -93,10 +101,19 @@ class Sidebar(tk.Frame):
         image = self.csuf_icon
         image_label = tk.Label(self, image=image,bg=self.FRAME_COLOR)
         image_label.pack(pady=(10,10))
+    def play_hover(self):
+        try:
+            pygame.mixer.music.load("Titan-Campus-Algorithmic-Assistant--TCAA-/gui/build/assets/sounds/blipSelect.wav")
+            pygame.mixer.music.play()
+        except Exception as e:
+            print(f"Sound playback error: {e}")
+
 
     def on_enter(self,e):
         e.widget['bg'] = self.FADE_COLOR
         e.widget['cursor'] = "hand2"
+        self.play_hover()
+        
 
     def on_leave(self,e):
         e.widget["bg"] = self.FRAME_COLOR
@@ -196,6 +213,8 @@ class App(tk.Tk):
         self.title("TCAA")
         self.resizable(False, False)
         self.geometry("1280x720")
+        #initializa pygame
+
         
         # Build layout
 
