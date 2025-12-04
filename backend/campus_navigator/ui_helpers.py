@@ -183,7 +183,7 @@ def create_nodes_ui(parent_frame,fade_color,small_font):
 
 
     canvas = tk.Canvas(parent_frame, width=600, height=500, bg=fade_color)
-    canvas.grid(row=0,column=0,padx=20, pady=20, sticky="n")
+    canvas.grid(row=0,column=0,padx=20, pady=50, sticky="n")
     
     canvas_width = 600
     canvas_height = 300
@@ -216,11 +216,11 @@ def create_nodes_ui(parent_frame,fade_color,small_font):
                                     bg=fade_color, font=small_font, fg="white")
     for abrv, name in campus_buildings:
         buildings_list_box.insert("end", f"{abrv} - {name}")
-    buildings_list_box.grid(row=0, column=1, padx=20, pady=20, sticky="n")
+    buildings_list_box.grid(row=0, column=1, padx=20, pady=70, sticky="n")
 
     # Output canvas
     output_canvas = tk.Canvas(parent_frame, width=600, height=100, bg=fade_color)
-    output_canvas.grid(row=1,column=0,padx=20, pady=20, sticky="n")
+    output_canvas.grid(row=1,column=0,padx=20, pady=10, sticky="n")
 
 
     # NodeManager

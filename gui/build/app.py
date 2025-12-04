@@ -4,11 +4,11 @@ from PIL import Image, ImageTk
 from backend.campus_navigator.node_manager import NodeManager
 from backend.campus_navigator import ui_helpers
 from backend.algo_info import create_nodes
-
+from backend.home import home
 from winsound import *
 #sounds
 import winsound
-
+import time
 import os
 
 
@@ -112,7 +112,7 @@ class Sidebar(tk.Frame):
     def on_enter(self,e):
         e.widget['bg'] = self.FADE_COLOR
         e.widget['cursor'] = "hand2"
-        self.play_hover_sound()
+        # self.play_hover_sound()
         
     def play_hover_sound(self):
         winsound.PlaySound(
@@ -155,8 +155,8 @@ class Content(tk.Frame):
         self.bg_photo = ImageTk.PhotoImage(bg_img)
          #colors
         self.FRAME_COLOR = "#0B1D3A"
-        self.TEXT_COLOR = "white"
         self.FADE_COLOR = '#182F53'
+        self.WHITE_COLOR = "#E5D9D9"
 
         # Fonts
         self.title_font = tkFont.Font(family="Museo Sans 900", size=18, weight="bold")
@@ -190,7 +190,7 @@ class Content(tk.Frame):
         self.clear_body()
         # self.set_title("Campus Navigator")
 
-        ui_helpers.create_nodes_ui(self.body,self.FRAME_COLOR,small_font=self.small_font)
+        ui_helpers.create_nodes_ui(self.body,self.FADE_COLOR,small_font=self.small_font)
 
     def show_planner(self):
         self.clear_body()
@@ -198,10 +198,12 @@ class Content(tk.Frame):
         self.clear_body()
     def show_algo_info(self):
         self.clear_body()
-        create_nodes.create_nodes_ui_algo(self.body, self.FRAME_COLOR,small_font=self.middle_font)
+        create_nodes.create_nodes_ui_algo(self.body)
     def show_home(self):
-        self.clear_body()
 
+        self.clear_body()
+        home.create_home_ui(self.body, self.FRAME_COLOR, small_font=self.small_font)
+        
     # def update_view(self, text):
     #     # Clear existing widgets
     #     for widget in self.winfo_children():
