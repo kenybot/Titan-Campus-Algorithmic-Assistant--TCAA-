@@ -20,7 +20,7 @@ def create_nodes_ui_algo(parent_frame):
     TEXT_COLOR = "white"
     FADE_COLOR = '#182F53'
 
-    bolt_icon = resize_image(r"Titan-Campus-Algorithmic-Assistant--TCAA-\gui\build\assets\frame0\bolt.png")
+    bolt_icon = resize_image("Titan-Campus-Algorithmic-Assistant--TCAA-/gui/build/assets/frame0/bolt.png")
 
     title_font = tkFont.Font(family="Museo Sans 900", size=18, weight="bold")
     middle_font = tkFont.Font(family="Museo Sans 700", size=16, weight="bold")
