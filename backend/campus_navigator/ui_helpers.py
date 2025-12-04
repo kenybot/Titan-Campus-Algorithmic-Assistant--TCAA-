@@ -175,12 +175,15 @@ def traversal_prompt(root, manager, method):
 def create_nodes_ui(parent_frame,fade_color,small_font):
     # Create a canvas inside the provided frame
 
-    left_frame = tk.Frame(parent_frame,highlightthickness=0,bd=0)
-    left_frame.grid(row=0,column=0,rowspan=2, sticky="n")
+    # left_frame = tk.Frame(parent_frame,highlightthickness=0,bd=0,bg="#E5D9D9")
+    # left_frame.grid(row=0,column=0,rowspan=2, sticky="n")
+
+    # below_left_frame = tk.Frame(parent_frame,highlightthickness=0)
+    # below_left_frame.grid(row=1,column=0)
 
 
-    canvas = tk.Canvas(left_frame, width=600, height=500, bg=fade_color)
-    canvas.pack(side="top",padx=20, pady=(20,5))
+    canvas = tk.Canvas(parent_frame, width=600, height=500, bg=fade_color)
+    canvas.grid(row=0,column=0,padx=20, pady=20, sticky="n")
     
     canvas_width = 600
     canvas_height = 300
@@ -216,21 +219,22 @@ def create_nodes_ui(parent_frame,fade_color,small_font):
     buildings_list_box.grid(row=0, column=1, padx=20, pady=20, sticky="n")
 
     # Output canvas
-    output_canvas = tk.Canvas(left_frame, width=600, height=100, bg=fade_color)
-    output_canvas.pack(side="top", padx=20, pady=(0,5))
+    output_canvas = tk.Canvas(parent_frame, width=600, height=100, bg=fade_color)
+    output_canvas.grid(row=1,column=0,padx=20, pady=20, sticky="n")
 
 
     # NodeManager
     manager = NodeManager(canvas)
 
     accessible_chk = tk.Checkbutton(
-        left_frame,
+        parent_frame,
         text="Accessible Only",
         variable=manager.accessible_only_mode,
         font=small_font,
-        bg=fade_color
+        bg=fade_color,
+        fg="white"
     )
-    accessible_chk.pack(side="top",padx=20, pady=(0,5))
+    accessible_chk.grid(row=2,column=0,sticky="n")
     parent_frame.rowconfigure(0, weight=1)
     parent_frame.rowconfigure(1, weight=0)
     parent_frame.columnconfigure(0, weight=1)

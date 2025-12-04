@@ -3,6 +3,7 @@ import tkinter.font as tkFont
 from PIL import Image, ImageTk
 from backend.campus_navigator.node_manager import NodeManager
 from backend.campus_navigator import ui_helpers
+from backend.algo_info import create_nodes
 
 from winsound import *
 #sounds
@@ -17,6 +18,10 @@ class Sidebar(tk.Frame):
         super().__init__(master, width=185, height=720, bg="#0B1D3A", **kwargs)
         self.pack(side=tk.LEFT)
         self.pack_propagate(False)
+        
+        #STATES
+        self.states = ["CAMPUS_NAVIGATOR","STUDY_PLANNER","NOTES_SEARCH","ALGO_INFO"]
+
 
         #colors
         self.FRAME_COLOR = "#0B1D3A"
@@ -188,6 +193,7 @@ class Content(tk.Frame):
         self.clear_body()
     def show_algo_info(self):
         self.clear_body()
+        create_nodes.create_nodes_ui_algo(self.body, self.FRAME_COLOR,small_font=self.middle_font)
     
 
     # def update_view(self, text):
