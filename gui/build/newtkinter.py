@@ -68,7 +68,7 @@ class Sidebar(tk.Frame):
 
         study_planner_btn = tk.Button(self, text="Study\nPlanner", image=self.calendar_icon,
                                  compound="left", bg=self.FRAME_COLOR, fg="white", 
-                                 relief="flat", padx=10, anchor="w",font=self.middle_font)
+                                 relief="flat", padx=10, anchor="w",font=self.middle_font, command=self.master.content.show_planner)
         study_planner_btn.pack(anchor="nw", padx=20, pady=15, fill="x")
 
         study_planner_btn.bind("<Enter>", self.on_enter)
@@ -77,7 +77,7 @@ class Sidebar(tk.Frame):
 
         notes_search_btn = tk.Button(self, text=" Notes \nSearch", image=self.search_icon,
                                compound="left", bg=self.FRAME_COLOR, fg="white", 
-                               relief="flat", padx=10, anchor="w",font=self.middle_font)
+                               relief="flat", padx=10, anchor="w",font=self.middle_font,command=self.master.content.show_notes_search)
         notes_search_btn.pack(anchor="nw", padx=20, pady=15, fill="x")
 
         notes_search_btn.bind("<Enter>", self.on_enter)
@@ -86,7 +86,7 @@ class Sidebar(tk.Frame):
 
         algo_info_btn = tk.Button(self, text=" Algo\nInfo", image=self.info_icon,
                                compound="left", bg=self.FRAME_COLOR, fg="white", 
-                               relief="flat", padx=10, anchor="w",font=self.middle_font, command=self.show_algo)
+                               relief="flat", padx=10, anchor="w",font=self.middle_font, command=self.master.content.show_algo_info)
         algo_info_btn.pack(anchor="nw", padx=20, pady=15, fill="x")
 
         algo_info_btn.bind("<Enter>", self.on_enter)
@@ -126,10 +126,10 @@ class Sidebar(tk.Frame):
         
     #functions
 
-    def show_nav(self):
-        self.master.content.update_view("Campus Navigator")
-    def show_algo(self):
-        self.master.content.update_view("ALgorithm Info Page")
+    # def show_nav(self):
+    #     self.master.content.update_view("Campus Navigator")
+    # def show_algo(self):
+    #     self.master.content.update_view("ALgorithm Info Page")
 
     
 
@@ -138,8 +138,6 @@ class Content(tk.Frame):
     def __init__(self, master, **kwargs):
         super().__init__(master, width=1095, height=720, bg="#E5D9D9", **kwargs)
         self.pack(side=tk.RIGHT, fill="both", expand=True)
-
-
 
         bg_img = Image.open("gui/build/assets/frame0/fall-vector.png")
         bg_img = bg_img.resize((1095,720))
@@ -156,8 +154,8 @@ class Content(tk.Frame):
         self.small_font = tkFont.Font(family="Museo Sans 100", size=10)
     
         """ HEADER """
-        self.header = tk.Frame(self, bg=self.FADE_COLOR, height=50)
-        self.header.pack(side="top",fill="x")
+        # self.header = tk.Frame(self, bg=self.FADE_COLOR, height=50)
+        # self.header.pack(side="top",fill="x")
 
         # self.body = tk.Frame(self, bg=self.FADE_COLOR)
         # self.body.pack(side="top",fill="both",expand=True)
@@ -167,8 +165,8 @@ class Content(tk.Frame):
         self.body.create_image(0, 0, image=self.bg_photo, anchor="nw")
 
 
-        self.content_title = tk.Label(self.header, text="Main Content Area",bg=self.FADE_COLOR,font=self.title_font,fg="white")
-        self.content_title.pack(side="top")
+        # self.content_title = tk.Label(self.header, text="Main Content Area",bg=self.FADE_COLOR,font=self.title_font,fg="white")
+        # self.content_title.pack(side="top")
 
        
     def clear_body(self):
@@ -180,10 +178,16 @@ class Content(tk.Frame):
 
     def show_navigation(self):
         self.clear_body()
-        self.set_title("Campus Navigator")
+        # self.set_title("Campus Navigator")
 
         ui_helpers.create_nodes_ui(self.body,self.FRAME_COLOR,small_font=self.small_font)
 
+    def show_planner(self):
+        self.clear_body()
+    def show_notes_search(self):
+        self.clear_body()
+    def show_algo_info(self):
+        self.clear_body()
     
 
     # def update_view(self, text):
