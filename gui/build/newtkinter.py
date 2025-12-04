@@ -106,7 +106,7 @@ class Sidebar(tk.Frame):
         
     def play_hover_sound(self):
         winsound.PlaySound(
-            r"Titan-Campus-Algorithmic-Assistant--TCAA-\gui\build\assets\sounds\blipSelect.wav",
+            "gui/build/assets/sounds/blipSelect.wav",
             winsound.SND_FILENAME | winsound.SND_ASYNC
         )
 
