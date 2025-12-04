@@ -20,7 +20,7 @@ def create_nodes_ui_algo(parent_frame):
     TEXT_COLOR = "white"
     FADE_COLOR = '#182F53'
 
-    bolt_icon = resize_image("Titan-Campus-Algorithmic-Assistant--TCAA-/gui/build/assets/frame0/bolt.png")
+    bolt_icon = resize_image("gui/build/assets/frame0/bolt.png")
 
     title_font = tkFont.Font(family="Museo Sans 900", size=18, weight="bold")
     middle_font = tkFont.Font(family="Museo Sans 700", size=16, weight="bold")
@@ -37,8 +37,9 @@ def create_nodes_ui_algo(parent_frame):
     time_comp_canvas.grid(row=0,column=0,padx=20,pady=(20,5),sticky="nsew")
 
 
-    time_comp_label = tk.Label(time_comp_canvas,image=bolt_icon,text="Time Complexities",font=middle_font,bg=FADE_COLOR,fg="white",justify="left")
+    time_comp_label = tk.Label(time_comp_canvas,image=bolt_icon,text="Time Complexities",font=middle_font,bg=FADE_COLOR,fg="white",justify="left",compound="left")
     time_comp_label.pack(anchor="nw",padx=5,pady=2)
+    time_comp_label.image = bolt_icon
 
     small_title = tk.Label(time_comp_canvas, text="Time complexities and complexity classes",
                                font=small_font, bg=FADE_COLOR, fg="white")
