@@ -40,17 +40,17 @@ class Sidebar(tk.Frame):
 
         # Load icons and keep references in instance variables
         self.info_icon = self.resize_image(
-            r"C:\Users\darre\OneDrive\Documents\CODING STUFF\Algorithm Proj-3\Titan-Campus-Algorithmic-Assistant--TCAA-\gui\build\assets\frame0\info.png"
+            "gui/build/assets/frame0/info.png"
         )
         self.calendar_icon = self.resize_image(
-            r"C:\Users\darre\OneDrive\Documents\CODING STUFF\Algorithm Proj-3\Titan-Campus-Algorithmic-Assistant--TCAA-\gui\build\assets\frame0\calendar.png"
+            "gui/build/assets/frame0/calendar.png"
         )
         
-        self.search_icon = self.resize_image(r"C:\Users\darre\OneDrive\Documents\CODING STUFF\Algorithm Proj-3\Titan-Campus-Algorithmic-Assistant--TCAA-\gui\build\assets\frame0\search (2).png")
+        self.search_icon = self.resize_image("gui/build/assets/frame0/search (2).png")
 
-        self.campus_icon = self.resize_image(r"C:\Users\darre\OneDrive\Documents\CODING STUFF\Algorithm Proj-3\Titan-Campus-Algorithmic-Assistant--TCAA-\gui\build\assets\frame0\map-marker.png")
+        self.campus_icon = self.resize_image("gui/build/assets/frame0/map-marker.png")
 
-        self.csuf_icon = self.resize_image(r"C:\Users\darre\OneDrive\Documents\CODING STUFF\Algorithm Proj-3\Titan-Campus-Algorithmic-Assistant--TCAA-\gui\build\assets\frame0\California_State_University,_Fullerton_seal.svg.png",(95,95))
+        self.csuf_icon = self.resize_image("gui/build/assets/frame0/California_State_University,_Fullerton_seal.svg.png",(95,95))
         # Buttons with icons
 
         campus_nav_btn = tk.Button(self, text="Campus \nNavigator", image=self.campus_icon,
@@ -129,7 +129,7 @@ class Content(tk.Frame):
 
 
 
-        bg_img = Image.open(r"C:\Users\darre\OneDrive\Documents\CODING STUFF\Algorithm Proj-3\Titan-Campus-Algorithmic-Assistant--TCAA-\gui\build\assets\frame0\fall-vector.png")
+        bg_img = Image.open("gui/build/assets/frame0/fall-vector.png")
         bg_img = bg_img.resize((1095,720))
 
         self.bg_photo = ImageTk.PhotoImage(bg_img)
