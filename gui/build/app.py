@@ -65,7 +65,7 @@ class Sidebar(tk.Frame):
 
         campus_nav_btn = tk.Button(self, text="Campus \nNavigator", image=self.campus_icon,
                                  compound="left", bg=self.FRAME_COLOR, fg="white", 
-                                 relief="flat", padx=10, anchor="w",font=self.middle_font,command=self.master.content.show_navigation)
+                                 relief="flat", padx=10, anchor="w",font=self.middle_font,command=self.master.content.show_navigation, activebackground=self.FADE_COLOR,activeforeground="white")
         campus_nav_btn.pack(anchor="nw", padx=20, pady=15, fill="x")
 
         campus_nav_btn.bind("<Enter>", self.on_enter)
@@ -73,7 +73,7 @@ class Sidebar(tk.Frame):
 
         study_planner_btn = tk.Button(self, text="Study\nPlanner", image=self.calendar_icon,
                                  compound="left", bg=self.FRAME_COLOR, fg="white", 
-                                 relief="flat", padx=10, anchor="w",font=self.middle_font, command=self.master.content.show_planner)
+                                 relief="flat", padx=10, anchor="w",font=self.middle_font, command=self.master.content.show_planner, activebackground=self.FADE_COLOR,activeforeground="white")
         study_planner_btn.pack(anchor="nw", padx=20, pady=15, fill="x")
 
         study_planner_btn.bind("<Enter>", self.on_enter)
@@ -82,7 +82,7 @@ class Sidebar(tk.Frame):
 
         notes_search_btn = tk.Button(self, text=" Notes \nSearch", image=self.search_icon,
                                compound="left", bg=self.FRAME_COLOR, fg="white", 
-                               relief="flat", padx=10, anchor="w",font=self.middle_font,command=self.master.content.show_notes_search)
+                               relief="flat", padx=10, anchor="w",font=self.middle_font,command=self.master.content.show_notes_search, activebackground=self.FADE_COLOR,activeforeground="white")
         notes_search_btn.pack(anchor="nw", padx=20, pady=15, fill="x")
 
         notes_search_btn.bind("<Enter>", self.on_enter)
@@ -91,7 +91,7 @@ class Sidebar(tk.Frame):
 
         algo_info_btn = tk.Button(self, text=" Algo\nInfo", image=self.info_icon,
                                compound="left", bg=self.FRAME_COLOR, fg="white", 
-                               relief="flat", padx=10, anchor="w",font=self.middle_font, command=self.master.content.show_algo_info)
+                               relief="flat", padx=10, anchor="w",font=self.middle_font, command=self.master.content.show_algo_info, activebackground=self.FADE_COLOR,activeforeground="white")
         algo_info_btn.pack(anchor="nw", padx=20, pady=15, fill="x")
 
         algo_info_btn.bind("<Enter>", self.on_enter)
@@ -100,9 +100,14 @@ class Sidebar(tk.Frame):
         divider = tk.Frame(self, bg="gray", height=1, width=185)
         divider.pack(anchor="nw", pady=(40, 10))
 
-        image = self.csuf_icon
-        image_label = tk.Label(self, image=image,bg=self.FRAME_COLOR)
-        image_label.pack(pady=(10,10))
+        # image = self.csuf_icon
+        # image_label = tk.Label(self, image=image,bg=self.FRAME_COLOR)
+        # image_label.pack(pady=(10,10))
+        home_btn = tk.Button(self,image= self.csuf_icon,bg=self.FRAME_COLOR, command=self.master.content.show_home,bd=0, activebackground=self.FADE_COLOR,activeforeground="white")
+        home_btn.pack(pady=(10,10))
+
+        home_btn.bind("<Enter>",self.on_enter)
+        home_btn.bind("<Leave>", self.on_leave)
 
     def on_enter(self,e):
         e.widget['bg'] = self.FADE_COLOR
@@ -194,7 +199,8 @@ class Content(tk.Frame):
     def show_algo_info(self):
         self.clear_body()
         create_nodes.create_nodes_ui_algo(self.body, self.FRAME_COLOR,small_font=self.middle_font)
-    
+    def show_home(self):
+        self.clear_body()
 
     # def update_view(self, text):
     #     # Clear existing widgets
