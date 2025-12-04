@@ -1,6 +1,11 @@
 import tkinter as tk
 import tkinter.font as tkFont
 from PIL import Image, ImageTk
+from backend.campus_navigator.node_manager import NodeManager
+from backend.campus_navigator import ui_helpers
+
+import os
+
 
 class Sidebar(tk.Frame):
     def __init__(self, master, **kwargs):
@@ -35,17 +40,17 @@ class Sidebar(tk.Frame):
 
         # Load icons and keep references in instance variables
         self.info_icon = self.resize_image(
-            "Titan-Campus-Algorithmic-Assistant--TCAA-/gui/build/assets/frame0/info.png"
+            r"C:\Users\darre\OneDrive\Documents\CODING STUFF\Algorithm Proj-3\Titan-Campus-Algorithmic-Assistant--TCAA-\gui\build\assets\frame0\info.png"
         )
         self.calendar_icon = self.resize_image(
-            "Titan-Campus-Algorithmic-Assistant--TCAA-/gui/build/assets/frame0/calendar.png"
+            r"C:\Users\darre\OneDrive\Documents\CODING STUFF\Algorithm Proj-3\Titan-Campus-Algorithmic-Assistant--TCAA-\gui\build\assets\frame0\calendar.png"
         )
         
-        self.search_icon = self.resize_image("Titan-Campus-Algorithmic-Assistant--TCAA-/gui/build/assets/frame0/search (2).png")
+        self.search_icon = self.resize_image(r"C:\Users\darre\OneDrive\Documents\CODING STUFF\Algorithm Proj-3\Titan-Campus-Algorithmic-Assistant--TCAA-\gui\build\assets\frame0\search (2).png")
 
-        self.campus_icon = self.resize_image("Titan-Campus-Algorithmic-Assistant--TCAA-/gui/build/assets/frame0/map-marker.png")
+        self.campus_icon = self.resize_image(r"C:\Users\darre\OneDrive\Documents\CODING STUFF\Algorithm Proj-3\Titan-Campus-Algorithmic-Assistant--TCAA-\gui\build\assets\frame0\map-marker.png")
 
-        self.csuf_icon = self.resize_image("Titan-Campus-Algorithmic-Assistant--TCAA-/gui/build/assets/frame0/California_State_University,_Fullerton_seal.svg.png",(95,95))
+        self.csuf_icon = self.resize_image(r"C:\Users\darre\OneDrive\Documents\CODING STUFF\Algorithm Proj-3\Titan-Campus-Algorithmic-Assistant--TCAA-\gui\build\assets\frame0\California_State_University,_Fullerton_seal.svg.png",(95,95))
         # Buttons with icons
 
         campus_nav_btn = tk.Button(self, text="Campus \nNavigator", image=self.campus_icon,
@@ -122,6 +127,12 @@ class Content(tk.Frame):
         super().__init__(master, width=1095, height=720, bg="#E5D9D9", **kwargs)
         self.pack(side=tk.RIGHT, fill="both", expand=True)
 
+
+
+        bg_img = Image.open(r"C:\Users\darre\OneDrive\Documents\CODING STUFF\Algorithm Proj-3\Titan-Campus-Algorithmic-Assistant--TCAA-\gui\build\assets\frame0\fall-vector.png")
+        bg_img = bg_img.resize((1095,720))
+
+        self.bg_photo = ImageTk.PhotoImage(bg_img)
          #colors
         self.FRAME_COLOR = "#0B1D3A"
         self.TEXT_COLOR = "white"
@@ -131,16 +142,20 @@ class Content(tk.Frame):
         self.title_font = tkFont.Font(family="Museo Sans 900", size=18, weight="bold")
         self.middle_font = tkFont.Font(family="Museo Sans 700", size=16, weight="bold")
         self.small_font = tkFont.Font(family="Museo Sans 100", size=10)
-        
-        self.header = tk.Frame(self, bg=self.FRAME_COLOR, height=50)
+    
+        """ HEADER """
+        self.header = tk.Frame(self, bg=self.FADE_COLOR, height=50)
         self.header.pack(side="top",fill="x")
 
-        self.body = tk.Frame(self, bg=self.FADE_COLOR)
-        self.body.pack(side="top",fill="both",expand=True)
+        # self.body = tk.Frame(self, bg=self.FADE_COLOR)
+        # self.body.pack(side="top",fill="both",expand=True)
+        """ BODY """
+        self.body = tk.Canvas(self, width=1095, height=720,highlightthickness=0,bd=0)
+        self.body.pack(side="top", fill="both", expand=True)
+        self.body.create_image(0, 0, image=self.bg_photo, anchor="nw")
 
 
-        # Example placeholder
-        self.content_title = tk.Label(self.header, text="Main Content Area", bg="#E5D9D9",font=self.title_font)
+        self.content_title = tk.Label(self.header, text="Main Content Area",bg=self.FADE_COLOR,font=self.title_font,fg="white")
         self.content_title.pack(side="top")
 
        
@@ -155,9 +170,9 @@ class Content(tk.Frame):
         self.clear_body()
         self.set_title("Campus Navigator")
 
-        canvas = tk.Canvas(self, width=800,height=600, bg=self.FADE_COLOR)
-        canvas.pack()
+        ui_helpers.create_nodes_ui(self.body,self.FRAME_COLOR,small_font=self.small_font)
 
+    
 
     # def update_view(self, text):
     #     # Clear existing widgets

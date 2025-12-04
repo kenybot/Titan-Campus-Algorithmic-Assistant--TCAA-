@@ -2,7 +2,7 @@ from tkinter import messagebox
 import tkinter as tk
 import random
 from tkinter import *
-from campus_navigator.node_manager import NodeManager
+from .node_manager import NodeManager
 
 
 campus_buildings = [
@@ -72,6 +72,8 @@ tk_colors = [
     "hot pink", "deep pink", "pink", "light pink", "pale violet red", "maroon", "medium violet red", "violet red",
     "medium orchid", "dark orchid", "dark violet", "blue violet", "purple", "medium purple", "thistle"
 ]
+
+
 
 def choose_building():
     if not campus_buildings_abrv: #if the campus buildings are empty
@@ -167,63 +169,86 @@ def traversal_prompt(root, manager, method):
 
     tk.Button(top, text="Run", command=run).grid(row=2, column=0, columnspan=2)
 
-def create_nodes_on_canvas():
 
-    # BACKBONE
-    root = tk.Tk()
-    root.title("Interactive Campus Navigation System")
-    root.configure(bg="#D3DAD9")
 
-    #create a main frame
+# backend/campus_navigator/ui_helpers.py
+def create_nodes_ui(parent_frame,fade_color,small_font):
+    # Create a canvas inside the provided frame
 
-    main_frame = tk.Frame(root)
-    main_frame.grid(row=0,column=0,sticky="nw",padx=10,pady=10)
-   
+    left_frame = tk.Frame(parent_frame,highlightthickness=0,bd=0)
+    left_frame.grid(row=0,column=0,rowspan=2, sticky="n")
 
-    canvas = tk.Canvas(main_frame, width=800, height=600, bg="#44444E")
-    canvas.grid(row = 0, column = 0, sticky="nw")
 
-    guide = tk.Label(canvas,text ="Right click to start",fg="white",font =("Helvetica", 10, "bold"),bg="#44444E")
-
-    canvas.create_window(400,50,window=guide)
+    canvas = tk.Canvas(left_frame, width=600, height=500, bg=fade_color)
+    canvas.pack(side="top",padx=20, pady=(20,5))
     
+    canvas_width = 600
+    canvas_height = 300
+
+    guide = tk.Label(canvas, text="Right click to start",
+                     fg="white", font=small_font, bg=fade_color)
     
-    #Buildings list 
-    buildings_list_box = Listbox(height=40,width =50,bg="white",font=("Helvetica", 10, "bold"))
-    for buildings in campus_buildings:
-        buildings_list_box.insert("end", buildings )
-    buildings_list_box.grid(row=0, column=1,padx=30, pady=30,sticky="n")
+    guide_window = canvas.create_window(canvas_width/2, canvas_height/2, window=guide)
 
-    output_canvas = tk.Canvas(main_frame,width =800, height = 100, bg="#44444E")
-    output_canvas.grid(row = 1, column=0, sticky="nw",columnspan=2, pady=(0,10))
-    #Class declarations
 
+    def fade_out(label,canvas, guide_window, steps=3,delay=20):
+
+        def fade(step=0):
+            if step < steps:
+                gray =255 - int((255/steps) *steps)
+                color = "white"
+
+                label.config(fg=color)
+                canvas.after(delay, lambda: fade(step+1))
+            else:
+                canvas.delete(guide_window)
+        fade()
+    
+    def on_right_click(event):
+        fade_out(guide,canvas,guide_window)
+
+        menu_pop_up(event,open_menu)
+    # Buildings list
+    buildings_list_box = tk.Listbox(parent_frame, height=30, width=50,
+                                    bg=fade_color, font=small_font, fg="white")
+    for abrv, name in campus_buildings:
+        buildings_list_box.insert("end", f"{abrv} - {name}")
+    buildings_list_box.grid(row=0, column=1, padx=20, pady=20, sticky="n")
+
+    # Output canvas
+    output_canvas = tk.Canvas(left_frame, width=600, height=100, bg=fade_color)
+    output_canvas.pack(side="top", padx=20, pady=(0,5))
+
+
+    # NodeManager
     manager = NodeManager(canvas)
 
     accessible_chk = tk.Checkbutton(
-    root,
-    text="Accessible Only",
-    variable=manager.accessible_only_mode,
-    font=("Helvetica", 10, "bold"),
-    bg="#D3DAD9"
-)
-    accessible_chk.grid(row=2, column=0, sticky="w", padx=10, pady=5)
-    
-    """RIGHT CLICK MENU TO ALLOW FOR NODE CREATION/EDGE CREATION , etc"""
-    
-    open_menu = Menu(root, tearoff = 0)
-    open_menu.add_command(label = "Create a node",command=lambda: manager.create_node(*get_mouse_position(canvas),choose_building()))
+        left_frame,
+        text="Accessible Only",
+        variable=manager.accessible_only_mode,
+        font=small_font,
+        bg=fade_color
+    )
+    accessible_chk.pack(side="top",padx=20, pady=(0,5))
+    parent_frame.rowconfigure(0, weight=1)
+    parent_frame.rowconfigure(1, weight=0)
+    parent_frame.columnconfigure(0, weight=1)
+    parent_frame.columnconfigure(1, weight=1)
 
-    open_menu.add_command(label= "Add edges", command = lambda: prompt_edge_creation(root,manager))
 
-    open_menu.add_command(label="Randomize weights", command = manager.randomize_weights)
+    # Right-click menu
+    open_menu = tk.Menu(parent_frame, tearoff=0)
+    open_menu.add_command(label="Create a node",
+                          command=lambda: manager.create_node(*get_mouse_position(canvas), choose_building()))
+    open_menu.add_command(label="Add edges", command=lambda: prompt_edge_creation(parent_frame, manager))
+    open_menu.add_command(label="Randomize weights", command=manager.randomize_weights)
     open_menu.add_separator()
-    open_menu.add_command(label="Start BFS", command=lambda: traversal_prompt(root,manager,"bfs"))
-    open_menu.add_command(label="Start DFS", command=lambda: traversal_prompt(root,manager,"dfs"))
-    open_menu.add_command(label="Restart canvas", command = manager.restart)
+    open_menu.add_command(label="Start BFS", command=lambda: traversal_prompt(parent_frame, manager, "bfs"))
+    open_menu.add_command(label="Start DFS", command=lambda: traversal_prompt(parent_frame, manager, "dfs"))
+    open_menu.add_command(label="Restart canvas", command=manager.restart)
 
-    #OPENS THE MENU USING RIGHT CLICK
-    canvas.bind('<Button-3>', lambda event: menu_pop_up(event, open_menu))
 
-    #mainloop, necessary to run the program.
-    root.mainloop()
+    canvas.bind('<Button-3>', on_right_click)
+  
+    return manager

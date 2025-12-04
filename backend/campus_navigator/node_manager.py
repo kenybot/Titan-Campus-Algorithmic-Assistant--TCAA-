@@ -1,5 +1,5 @@
-from campus_navigator.node import Node
-from campus_navigator.edge import Edge
+from .node import Node
+from .edge import Edge
 import tkinter as tk
 from tkinter import messagebox
 import random
