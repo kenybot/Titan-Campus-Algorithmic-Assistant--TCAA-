@@ -11,28 +11,102 @@ def resize_image(png_file, size=(20, 20)):
         except Exception as e:
             print(f"Image load error: {png_file}, {e}")
             return None
+        
+def populate_complex_classes(canvas,small_font, title_font):
+    x_pad = 10
+    y_start =30
+    line_height = 25
 
+    def add_header(text, y):
+        canvas.create_text(x_pad, y, text=text, font=title_font, fill="white", anchor="nw")
+        return y + line_height
+
+    def add_entry(text, y):
+        entry = text
+        canvas.create_text(x_pad + 15, y+2, text=entry, font=small_font, fill="white", anchor="nw")
+        return y + line_height
+    
+
+    y = y_start
+    #FIRST ONE.
+    y = add_header("O(1) - Constant Time", y)
+    y = add_entry("Best case performance. Execution time doesn't depend on input size.", y)
+
+    y = add_header("O(log n) - Logarithmic", y)
+    y = add_entry("Divides problem in half each iteration. Very efficient for large inputs.", y)
+
+    y = add_header("O(n) - Linear Time", y)
+    y = add_entry("Execution time grows linearly with input size. Common in many algorithms.", y)
+
+    y = add_header("O(n log n) - Linearithmic", y)
+    y = add_entry("Optimal for comparison-based sorting. Efficient divide-and-conquer.", y)
+
+    y = add_header("O(n²) - Quadratic", y)
+    y = add_entry("Nested iterations. Can be slow for large inputs but simple to implement.", y)
+
+    y = add_header("O(2ⁿ) - Exponential", y)
+    y = add_entry("Grows extremely fast. Usually requires optimization or approximation.", y)
+
+     
+
+def populate_time_complexities(canvas, small_font, title_font):
+    x_pad = 10
+    y_start = 70
+    line_height = 25
+
+    def add_header(text, y):
+        canvas.create_text(x_pad, y, text=text, font=title_font, fill="white", anchor="nw")
+        return y + line_height
+
+    def add_entry(name, time, space, y):
+        entry = f"{name}: Time: {time}, Space: {space}"
+        canvas.create_text(x_pad + 20, y+2, text=entry, font=small_font, fill="white", anchor="nw")
+        return y + line_height
+
+    y = y_start
+
+    # Graph Traversal
+    y = add_header("Graph Traversal", y)
+    y = add_entry("BFS", "O(V + E)", "O(V)", y)
+    y = add_entry("DFS", "O(V + E)", "O(V)", y)
+
+    # Shortest Path
+    y = add_header("Shortest Path", y)
+    y = add_entry("Dijkstra", "O((V + E) log V)", "O(V)", y)
+
+    # Minimum Spanning Tree
+    y = add_header("Minimum Spanning Tree", y)
+    y = add_entry("Prim's MST", "O(E log V)", "O(V)", y)
+
+    # Optimization
+    y = add_header("Optimization", y)
+    y = add_entry("Greedy Scheduling", "O(n log n)", "O(1)", y)
+
+    # Dynamic Programming
+    y = add_header("Dynamic Programming", y)
+    y = add_entry("0/1 Knapsack", "O(n × W)", "O(n × W)", y)
+
+    # String Matching
+    y = add_header("String Matching", y)
+    y = add_entry("Naive Search", "O(n × m)", "O(1)", y)
+    y = add_entry("Rabin-Karp", "O(n + m)", "O(1)", y)
+    y = add_entry("KMP", "O(n + m)", "O(m)", y)
 
 def create_nodes_ui_algo(parent_frame):
     
-
     FRAME_COLOR = "#0B1D3A"
     TEXT_COLOR = "white"
     FADE_COLOR = '#182F53'
 
     bolt_icon = resize_image("gui/build/assets/frame0/bolt.png")
+    complex_icon = resize_image("gui/build/assets/frame0/chat-arrow-grow.png")
 
-    title_font = tkFont.Font(family="Museo Sans 900", size=18, weight="bold")
+    smallmid_font = tkFont.Font(family="Museo Sans 900", size=12, weight="bold")
     middle_font = tkFont.Font(family="Museo Sans 700", size=16, weight="bold")
     small_font = tkFont.Font(family="Museo Sans 100", size=10)
-        
     
-    # header = tk.Frame(parent_frame,bg=fade_color,height=50)
-    # header.pack(side="top",fill="x")
+    # --- Time Complexity Section ---
 
-    # content_title = tk.Label(header, text = " Algorithm Informations ",bg=fade_color,font=small_font,fg='white')
-    # content_title.pack(side="top")
-    
     time_comp_canvas = tk.Canvas(parent_frame, width=200, height=300, bg=FADE_COLOR)
     time_comp_canvas.grid(row=0,column=0,padx=20,pady=(20,5),sticky="nsew")
 
@@ -47,20 +121,30 @@ def create_nodes_ui_algo(parent_frame):
 
     divider = tk.Frame(time_comp_canvas, bg="gray", height=1, width=400)
     divider.pack(anchor="nw", pady=(0, 10))
-   
+
+    populate_time_complexities(time_comp_canvas,small_font=smallmid_font,title_font=small_font)
+
+    # --- N VS NP Section ---
+
     n_np_canvas = tk.Canvas(parent_frame,width=400, height=200, bg=FADE_COLOR)
     n_np_canvas.grid(row=1,column=0,padx=20,pady=(20,5), sticky="nsew")
 
-    complexity_canvas = tk.Canvas(parent_frame, width=200, height=300,bg=FADE_COLOR)
-    complexity_canvas.grid(row=0,column=1,padx=20,pady=70,sticky="nsew")
 
-    small_title = tk.Label(complexity_canvas, text="Complexity Classes",
-                               font=small_font, bg=FADE_COLOR, fg="white")
-    small_title.pack(anchor="nw", padx=5, pady=2)
+
     
-    divider = tk.Frame(complexity_canvas, bg="gray", height=1, width=10)
-    divider.pack(anchor="nw", pady=(0, 10))
 
+    # --- Complexity Section ---
+
+    complexity_canvas = tk.Canvas(parent_frame, width=200, height=300,bg=FADE_COLOR)
+    complexity_canvas.grid(row=0,column=1,padx=20,pady=(20,5),sticky="nsew")
+
+    complex_label = tk.Label(complexity_canvas,image=complex_icon, text="Complexity Classes",
+                               font=middle_font, bg=FADE_COLOR, fg="white",compound="left",padx=10)
+    complex_label.pack(anchor="nw", padx=5, pady=2)
+    complex_label.image = complex_icon
+
+    populate_complex_classes(complexity_canvas,small_font=small_font,title_font=smallmid_font)
+    
 
     parent_frame.grid_columnconfigure(0, weight=1)
     parent_frame.grid_columnconfigure(1, weight=1)

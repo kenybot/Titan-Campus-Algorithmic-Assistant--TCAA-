@@ -1,7 +1,7 @@
 import tkinter as tk
 import tkinter.font as tkFont
 from PIL import Image, ImageTk
-from backend.campus_navigator.node_manager import NodeManager
+
 from backend.campus_navigator import ui_helpers
 from backend.algo_info import create_nodes
 from backend.home import home
@@ -12,17 +12,13 @@ import time
 import os
 
 
-
 class Sidebar(tk.Frame):
     def __init__(self, master, **kwargs):
         super().__init__(master, width=185, height=720, bg="#0B1D3A", **kwargs)
         self.pack(side=tk.LEFT)
         self.pack_propagate(False)
+        self.active_btn = None
         
-        #STATES
-        self.states = ["CAMPUS_NAVIGATOR","STUDY_PLANNER","NOTES_SEARCH","ALGO_INFO"]
-
-
         #colors
         self.FRAME_COLOR = "#0B1D3A"
         self.TEXT_COLOR = "white"
@@ -33,7 +29,6 @@ class Sidebar(tk.Frame):
         self.middle_font = tkFont.Font(family="Museo Sans 700", size=16, weight="bold")
         self.small_font = tkFont.Font(family="Museo Sans 100", size=10)
         
-
         # Title
         app_title = tk.Label(self, text="Titan Campus\nAlgorithmic\nAssistant",
                              font=self.title_font, bg=self.FRAME_COLOR, fg="white", justify="left")
@@ -70,6 +65,7 @@ class Sidebar(tk.Frame):
 
         campus_nav_btn.bind("<Enter>", self.on_enter)
         campus_nav_btn.bind("<Leave>", self.on_leave)
+        campus_nav_btn.bind("<Button-1>" ,self.on_click)
 
         study_planner_btn = tk.Button(self, text="Study\nPlanner", image=self.calendar_icon,
                                  compound="left", bg=self.FRAME_COLOR, fg="white", 
@@ -78,6 +74,7 @@ class Sidebar(tk.Frame):
 
         study_planner_btn.bind("<Enter>", self.on_enter)
         study_planner_btn.bind("<Leave>", self.on_leave)
+        study_planner_btn.bind("<Button-1>" ,self.on_click)
 
 
         notes_search_btn = tk.Button(self, text=" Notes \nSearch", image=self.search_icon,
@@ -87,6 +84,7 @@ class Sidebar(tk.Frame):
 
         notes_search_btn.bind("<Enter>", self.on_enter)
         notes_search_btn.bind("<Leave>", self.on_leave)
+        notes_search_btn.bind("<Button-1>" ,self.on_click)
 
 
         algo_info_btn = tk.Button(self, text=" Algo\nInfo", image=self.info_icon,
@@ -96,23 +94,32 @@ class Sidebar(tk.Frame):
 
         algo_info_btn.bind("<Enter>", self.on_enter)
         algo_info_btn.bind("<Leave>", self.on_leave)
+        algo_info_btn.bind("<Button-1>" ,self.on_click)
 
         divider = tk.Frame(self, bg="gray", height=1, width=185)
         divider.pack(anchor="nw", pady=(40, 10))
 
-        # image = self.csuf_icon
-        # image_label = tk.Label(self, image=image,bg=self.FRAME_COLOR)
-        # image_label.pack(pady=(10,10))
         home_btn = tk.Button(self,image= self.csuf_icon,bg=self.FRAME_COLOR, command=self.master.content.show_home,bd=0, activebackground=self.FADE_COLOR,activeforeground="white")
         home_btn.pack(pady=(10,10))
 
         home_btn.bind("<Enter>",self.on_enter)
         home_btn.bind("<Leave>", self.on_leave)
+    
+    #HELPER FUNCTIONS FOR SIDEBAR
 
     def on_enter(self,e):
         e.widget['bg'] = self.FADE_COLOR
         e.widget['cursor'] = "hand2"
         # self.play_hover_sound()
+
+    def on_click(self, e):
+        if self.active_btn and self.active_btn != e.widget:
+            self.active_btn['bg'] = self.FRAME_COLOR
+
+        # Set new active button
+        self.active_btn = e.widget
+        self.active_btn['bg'] = self.FADE_COLOR
+
         
     def play_hover_sound(self):
         winsound.PlaySound(
@@ -121,7 +128,8 @@ class Sidebar(tk.Frame):
         )
 
     def on_leave(self,e):
-        e.widget["bg"] = self.FRAME_COLOR
+        if e.widget != self.active_btn:
+            e.widget["bg"] = self.FRAME_COLOR
         
 
     def resize_image(self, png_file, size=(20, 20)):
@@ -133,16 +141,7 @@ class Sidebar(tk.Frame):
         except Exception as e:
             print(f"Image load error: {png_file}, {e}")
             return None
-        
-    #functions
-
-    # def show_nav(self):
-    #     self.master.content.update_view("Campus Navigator")
-    # def show_algo(self):
-    #     self.master.content.update_view("ALgorithm Info Page")
-
     
-
     #problem i faced. I had functions resize_image outside the sidebar scope which dont work as its not returning the resized images.
 class Content(tk.Frame):
     def __init__(self, master, **kwargs):
@@ -163,22 +162,12 @@ class Content(tk.Frame):
         self.middle_font = tkFont.Font(family="Museo Sans 700", size=16, weight="bold")
         self.small_font = tkFont.Font(family="Museo Sans 100", size=10)
     
-        """ HEADER """
-        # self.header = tk.Frame(self, bg=self.FADE_COLOR, height=50)
-        # self.header.pack(side="top",fill="x")
-
-        # self.body = tk.Frame(self, bg=self.FADE_COLOR)
-        # self.body.pack(side="top",fill="both",expand=True)
         """ BODY """
         self.body = tk.Canvas(self, width=1095, height=720,highlightthickness=0,bd=0)
         self.body.pack(side="top", fill="both", expand=True)
         self.body.create_image(0, 0, image=self.bg_photo, anchor="nw")
 
-
-        # self.content_title = tk.Label(self.header, text="Main Content Area",bg=self.FADE_COLOR,font=self.title_font,fg="white")
-        # self.content_title.pack(side="top")
-
-       
+    #HELPER FUNCTIONS FOR CONTENT
     def clear_body(self):
         for widget in self.body.winfo_children():
             widget.destroy()
@@ -188,10 +177,7 @@ class Content(tk.Frame):
 
     def show_navigation(self):
         self.clear_body()
-        # self.set_title("Campus Navigator")
-
         ui_helpers.create_nodes_ui(self.body,self.FADE_COLOR,small_font=self.small_font)
-
     def show_planner(self):
         self.clear_body()
     def show_notes_search(self):
@@ -200,25 +186,8 @@ class Content(tk.Frame):
         self.clear_body()
         create_nodes.create_nodes_ui_algo(self.body)
     def show_home(self):
-
         self.clear_body()
         home.create_home_ui(self.body, self.FRAME_COLOR, small_font=self.small_font)
-        
-    # def update_view(self, text):
-    #     # Clear existing widgets
-    #     for widget in self.winfo_children():
-    #         widget.destroy()
-
-    #     # Add a new label
-    #     tk.Label(self, text=text, bg="#E5D9D9", font=("Arial", 18, "bold")).pack(pady=20)
-
-    #     # Add something else (example: a button)
-    #     tk.Button(self, text="Do Something", command=lambda: print("Button clicked")).pack(pady=10)
-
-    #     # Add another widget (example: an entry box)
-    #     tk.Entry(self).pack(pady=10)
-    
-
 
 class App(tk.Tk):
     def __init__(self):
@@ -226,9 +195,7 @@ class App(tk.Tk):
         self.title("TCAA")
         self.resizable(False, False)
         self.geometry("1280x720")
-        #initializa pygame
-
-        
+       
         # Build layout
 
         self.content = Content(self)

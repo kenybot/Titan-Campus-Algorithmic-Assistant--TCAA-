@@ -163,8 +163,10 @@ def traversal_prompt(root, manager, method):
     def run():
         if method == "bfs":
             manager.bfs(start_var.get(), goal_var.get())
-        else:
+        elif method =="dfs":
             manager.dfs(start_var.get(), goal_var.get())
+        elif method =="djikstra":
+            manager.dijkstra(start_var.get(), goal_var.get())
         top.destroy()
 
     tk.Button(top, text="Run", command=run).grid(row=2, column=0, columnspan=2)
@@ -250,7 +252,9 @@ def create_nodes_ui(parent_frame,fade_color,small_font):
     open_menu.add_separator()
     open_menu.add_command(label="Start BFS", command=lambda: traversal_prompt(parent_frame, manager, "bfs"))
     open_menu.add_command(label="Start DFS", command=lambda: traversal_prompt(parent_frame, manager, "dfs"))
+    open_menu.add_command(label="Start Dijkstra", command= lambda:traversal_prompt(parent_frame,manager,"dijkstra"))
     open_menu.add_command(label="Restart canvas", command=manager.restart)
+    
 
 
     canvas.bind('<Button-3>', on_right_click)
