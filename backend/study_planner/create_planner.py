@@ -149,7 +149,7 @@ def create_nodes_ui_planner(parent_frame):
 
     
    
-    tk.Label(input_frame, text="Available Time", fg=TEXT_COLOR, bg=FADE_COLOR, font=smallmid_font).grid(row=1001, column=1, columnspan=10, pady=10,padx=10)
+    tk.Label(input_frame, text="Available Time", fg=TEXT_COLOR, bg=FADE_COLOR, font=smallmid_font).grid(row=1001, column=1, pady=10,padx=10)
 
     available_time = tk.Entry(input_frame, width=10, font=middle_font)
     available_time.grid(row=1001, column=2, columnspan=3, pady=10)

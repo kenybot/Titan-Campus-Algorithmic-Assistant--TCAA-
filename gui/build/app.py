@@ -1,7 +1,7 @@
 import tkinter as tk
 import tkinter.font as tkFont
 from PIL import Image, ImageTk
-
+from backend.notes_search import create_notes
 from backend.campus_navigator import ui_helpers
 from backend.algo_info import create_nodes
 from backend.study_planner import create_planner
@@ -177,7 +177,6 @@ class Content(tk.Frame):
 
     def set_title(self,text):
         self.content_title.config(text=text)
-
     def show_navigation(self):
         self.clear_body()
         ui_helpers.create_nodes_ui(self.body,self.FADE_COLOR,small_font=self.small_font)
@@ -188,6 +187,7 @@ class Content(tk.Frame):
         print("moved to planner")
     def show_notes_search(self):
         self.clear_body()
+        create_notes.create_search_ui(self.body)
         print("moved to notes_search")
     def show_algo_info(self):
         self.clear_body()

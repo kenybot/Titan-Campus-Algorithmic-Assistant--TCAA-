@@ -3,7 +3,7 @@ from tkinter import filedialog, messagebox
 import time
 import docx
 import PyPDF2
-
+import tkinter.font as tkFont
 # --- File loaders ---
 def load_txt(path):
     with open(path, "r", encoding="utf-8") as f:
@@ -86,10 +86,10 @@ def run_search(text, pattern, mode="ALL"):
     return results
 
 # --- Tkinter UI ---
-def create_search_ui():
-    root = tk.Tk()
-    root.title("Notes Search Engine")
-
+def create_search_ui(parent_frame):
+    FRAME_COLOR = "#0B1D3A"
+    TEXT_COLOR = "white"
+    FADE_COLOR = '#182F53'
     text_data = {"content": ""}
 
     # File upload
@@ -124,24 +124,39 @@ def create_search_ui():
         for algo, data in results.items():
             output_text.insert(tk.END, f"{algo}:\n")
             output_text.insert(tk.END, f"  Matches at indices: {data['matches']}\n")
-            output_text.insert(tk.END, f"  Time taken: {data['time']:.6f} seconds\n\n")
+            output_text.insert(tk.END, f"  Time taken: {data['time']:.6f} seconds\n\n")\
+            
+    smallmid_font = tkFont.Font(family="Museo Sans 900", size=12, weight="bold")
+    middle_font = tkFont.Font(family="Museo Sans 700", size=18, weight="bold")
+    small_font = tkFont.Font(family="Museo Sans 100", size=10)
 
     # Widgets
-    tk.Button(root, text="Upload File", command=upload_file).pack(pady=5)
+    input_frame = tk.Frame(parent_frame, bg=FADE_COLOR,height=400,width=300)
+    input_frame.grid(row=0, column=0, padx=20, pady=(10, 5), sticky="n")
+    input_frame.grid_propagate(False)
 
-    tk.Label(root, text="Search Pattern:").pack()
-    pattern_entry = tk.Entry(root, width=40)
+    search_frame = tk.Frame(parent_frame, bg=FADE_COLOR,height=400,width=10)
+    search_frame.grid(row=1, column=0, padx=20, pady=(10, 5), sticky="n")
+    search_frame.grid_propagate(False)
+
+
+    tk.Button(input_frame, text="Upload File", command=upload_file,font=smallmid_font).pack(pady=5)
+    tk.Label(search_frame, text="Search Pattern:",font=smallmid_font,bg=FADE_COLOR,fg="white").pack()
+
+    pattern_entry = tk.Entry(search_frame, width=40)
     pattern_entry.pack(pady=5)
-
     algo_var = tk.StringVar(value="ALL")
-    tk.Label(root, text="Choose Algorithm:").pack()
-    tk.OptionMenu(root, algo_var, "Naive", "Rabin-Karp", "KMP", "ALL").pack(pady=5)
 
-    tk.Button(root, text="Run Search", command=search).pack(pady=10)
+    tk.Label(search_frame, text="Choose Algorithm:",font=smallmid_font,bg=FADE_COLOR,fg="white").pack() 
+    tk.OptionMenu(search_frame, algo_var, "Naive", "Rabin-Karp", "KMP", "ALL").pack(pady=5)
 
-    output_text = tk.Text(root, height=20, width=80)
+    tk.Button(search_frame, text="Run Search", command=search,font=small_font).pack(pady=10)
+
+    output_text = tk.Text(input_frame, height=20, width=80,font=small_font)
     output_text.pack(padx=10, pady=10)
-
+    parent_frame.grid_rowconfigure(0, weight=1)
+    parent_frame.grid_rowconfigure(1, weight=1)
+    parent_frame.grid_columnconfigure(0, weight=1)
 
 # Run the UI
 if __name__ == "__main__":

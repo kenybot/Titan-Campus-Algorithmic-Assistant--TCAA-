@@ -165,7 +165,7 @@ def traversal_prompt(root, manager, method):
             manager.bfs(start_var.get(), goal_var.get())
         elif method =="dfs":
             manager.dfs(start_var.get(), goal_var.get())
-        elif method =="djikstra":
+        elif method =="dijkstra":
             manager.dijkstra(start_var.get(), goal_var.get())
         top.destroy()
 
@@ -253,6 +253,7 @@ def create_nodes_ui(parent_frame,fade_color,small_font):
     open_menu.add_command(label="Start BFS", command=lambda: traversal_prompt(parent_frame, manager, "bfs"))
     open_menu.add_command(label="Start DFS", command=lambda: traversal_prompt(parent_frame, manager, "dfs"))
     open_menu.add_command(label="Start Dijkstra", command= lambda:traversal_prompt(parent_frame,manager,"dijkstra"))
+    open_menu.add_command(label="Run MST", command=manager.prim_mst)
     open_menu.add_command(label="Restart canvas", command=manager.restart)
     
 

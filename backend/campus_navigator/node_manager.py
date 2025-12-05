@@ -143,14 +143,15 @@ class NodeManager:
     def dijkstra(self, start_name, goal_name):
         for edge in self.edges:
             edge.update_state()
-        
+
         start = next((n for n in self.nodes if n.text == start_name), None)
         goal = next((n for n in self.nodes if n.text == goal_name), None)
 
         if not start or not goal:
             messagebox.showerror("Invalid", "Start or goal node not found.")
             return
-        pq = [(0,start, [], [start])]
+
+        pq = [(0, start, [], [start])]  # (current_dist, current_node, path_edges, path_nodes)
         visited = set()
 
         while pq:
@@ -159,9 +160,92 @@ class NodeManager:
             if current in visited:
                 continue
             visited.add(current)
-                
+
+            # Goal reached
             if current == goal:
-                print("STOP")
+                total_time = sum(edge.time for edge in path_edges)
+                for edge in path_edges:
+                    self.canvas.itemconfig(edge.line, fill="green")
+                self.display_output(
+                    f"Dijkstra Path: {' → '.join(n.text for n in path_nodes)}\n"
+                    f"Total Distance: {current_dist}m\n"
+                    f"Total Time: {total_time}min"
+                )
+                return
+
+            # Explore neighbors
+            for edge in self.get_connected_edges(current):
+                neighbor = edge.second_node if edge.first_node == current else edge.first_node
+                if neighbor not in visited:
+                    heappush(pq, (current_dist + edge.distance,
+                                neighbor,
+                                path_edges + [edge],
+                                path_nodes + [neighbor]))
+
+        messagebox.showinfo("No Path", "No path found.")
+
+    def prim_mst(self):
+        if not self.nodes:
+            messagebox.showerror("Empty", "No nodes available.")
+            return
+
+        visited = set()
+        mst_edges = []
+        total_distance = 0
+
+        # Start from the first node
+        start = self.nodes[0]
+        visited.add(start)
+
+        # Priority queue of edges (distance, tie-breaker, edge)
+        pq = []
+        for edge in self.get_connected_edges(start):
+            heappush(pq, (edge.distance, id(edge), edge))
+
+        while pq and len(visited) < len(self.nodes):
+            dist, _, edge = heappop(pq)
+
+            u, v = edge.first_node, edge.second_node
+
+            # Skip if both nodes already visited
+            if u in visited and v in visited:
+                continue
+
+            # Add edge to MST
+            mst_edges.append(edge)
+            total_distance += dist
+
+            # Pick the new node
+            new_node = v if u in visited else u
+            visited.add(new_node)
+
+            # Push edges from the new node
+            for next_edge in self.get_connected_edges(new_node):
+                neighbor = (
+                    next_edge.second_node
+                    if next_edge.first_node == new_node
+                    else next_edge.first_node
+                )
+                if neighbor not in visited:
+                    heappush(pq, (next_edge.distance, id(next_edge), next_edge))
+
+        if len(visited) < len(self.nodes):
+            messagebox.showwarning(
+                "Disconnected Graph",
+                "MST could not include all nodes (graph is disconnected)."
+            )
+
+        # Highlight MST edges
+        for edge in mst_edges:
+            self.canvas.itemconfig(edge.line, fill="blue")
+
+        self.display_output(
+            f"MST built with {len(mst_edges)} edges\n"
+            f"Total Distance: {total_distance}m"
+        )
+
+
+
             
     def bfs(self, start_name, goal_name):
         for edge in self.edges:

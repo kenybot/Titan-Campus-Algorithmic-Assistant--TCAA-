@@ -14,7 +14,7 @@ def resize_image(png_file, size=(20, 20)):
         
 def populate_complex_classes(canvas,small_font, title_font):
     x_pad = 10
-    y_start =70
+    y_start = 0
     line_height = 25
     FRAME_COLOR = "#0B1D3A"
 
@@ -74,7 +74,7 @@ def populate_complex_classes(canvas,small_font, title_font):
 def populate_time_complexities(canvas, small_font, title_font):
     FRAME_COLOR = "#0B1D3A"
     x_pad = 10
-    y_start = 70
+    y_start = 30
     line_height = 25
 
     def add_header(text, y):
@@ -93,7 +93,7 @@ def populate_time_complexities(canvas, small_font, title_font):
         # canvas.create_text(x_pad + 20, y+2, text=entry, font=small_font, fill="white", anchor="nw")
         text_id = canvas.create_text(
             x_pad, y,
-            text=entry, font=title_font, fill="white", anchor="nw"
+            text=entry, font=small_font, fill="white", anchor="nw"
         )
         x1, y1, x2, y2 = canvas.bbox(text_id)
         canvas.create_rectangle(x1, y1, x2, y2, fill=FRAME_COLOR, outline=FRAME_COLOR,width=1)
@@ -130,7 +130,6 @@ def populate_time_complexities(canvas, small_font, title_font):
     y = add_entry("KMP", "O(n + m)", "O(m)", y)
 
 def create_nodes_ui_algo(parent_frame):
-    
     FRAME_COLOR = "#0B1D3A"
     TEXT_COLOR = "white"
     FADE_COLOR = '#182F53'
@@ -141,64 +140,65 @@ def create_nodes_ui_algo(parent_frame):
     smallmid_font = tkFont.Font(family="Museo Sans 900", size=12, weight="bold")
     middle_font = tkFont.Font(family="Museo Sans 700", size=16, weight="bold")
     small_font = tkFont.Font(family="Museo Sans 100", size=10)
-    
+
     # --- Time Complexity Section ---
+    time_comp_frame = tk.Frame(parent_frame, bg=FADE_COLOR)
+    time_comp_frame.grid(row=0, column=0, padx=20, pady=0, sticky="nsew")
 
-    time_comp_canvas = tk.Canvas(parent_frame, width=200, height=300, bg=FADE_COLOR)
-    time_comp_canvas.grid(row=0,column=0,padx=20,pady=(20,5),sticky="nsew")
-
-
-    time_comp_label = tk.Label(time_comp_canvas,image=bolt_icon,text="Time Complexities",font=middle_font,bg=FADE_COLOR,fg="white",justify="left",compound="left")
-    time_comp_label.pack(anchor="nw",padx=5,pady=2)
+    time_comp_label = tk.Label(time_comp_frame, image=bolt_icon, text="Time Complexities",
+                               font=middle_font, bg=FADE_COLOR, fg="white",
+                               justify="left", compound="left")
+    time_comp_label.pack(anchor="nw", padx=5, pady=2)
     time_comp_label.image = bolt_icon
 
-    small_title = tk.Label(time_comp_canvas, text="Time complexities and complexity classes",
-                               font=small_font, bg=FADE_COLOR, fg="white")
+    small_title = tk.Label(time_comp_frame, text="Time complexities and complexity classes",
+                           font=small_font, bg=FADE_COLOR, fg="white")
     small_title.pack(anchor="nw", padx=5, pady=2)
 
-    divider = tk.Frame(time_comp_canvas, bg="gray", height=1, width=400)
-    divider.pack(anchor="nw", pady=(0, 10))
+    divider = tk.Frame(time_comp_frame, bg="gray", height=1)
+    divider.pack(fill="x", pady=(0, 10))
 
-    populate_time_complexities(time_comp_canvas,small_font=smallmid_font,title_font=small_font)
+    # Use a Canvas inside the frame for custom drawing
+    time_comp_canvas = tk.Canvas(time_comp_frame, bg=FADE_COLOR, highlightthickness=0)
+    time_comp_canvas.pack(fill="both", expand=True)
+    populate_time_complexities(time_comp_canvas, small_font=small_font, title_font=smallmid_font)
 
     # --- N VS NP Section ---
-
-    n_np_canvas = tk.Canvas(parent_frame, width=200, height=200, bg=FADE_COLOR)
-    n_np_canvas.grid(row=1, column=0, padx=20, pady=(20, 5), sticky="nsew")
-
-    n_np_frame = tk.Frame(n_np_canvas, bg=FADE_COLOR)
-    n_np_canvas.create_window((2, 2), window=n_np_frame, anchor="nw")
+    n_np_frame = tk.Frame(parent_frame, bg=FADE_COLOR)
+    n_np_frame.grid(row=1, column=0, padx=20, pady=(20, 5), sticky="nsew")
 
     n_np_label = tk.Label(n_np_frame, text="N vs NP", font=middle_font, bg=FADE_COLOR, fg="white")
     n_np_label.pack(anchor="nw", padx=5, pady=2)
 
-    n_np_desc = tk.Label(n_np_frame, text="P problems: You can find the answer quickly\nNP problems: You can check the answer quickly, but finding it may take exponential time.",
-                        font=small_font, bg=FADE_COLOR, fg="white", justify="left")
+    n_np_desc = tk.Label(n_np_frame,
+                         text="P problems: You can find the answer quickly\n"
+                              "NP problems: You can check the answer quickly, but finding it may take exponential time.",
+                         font=small_font, bg=FADE_COLOR, fg="white", justify="left")
     n_np_desc.pack(anchor="nw", padx=5, pady=2)
 
-    
-
     # --- Complexity Section ---
+    complexity_frame = tk.Frame(parent_frame, bg=FADE_COLOR)
+    complexity_frame.grid(row=0, column=1, rowspan=2, padx=20, pady=(20, 5), sticky="nsew")
 
-    complexity_canvas = tk.Canvas(parent_frame, width=200, height=300,bg=FADE_COLOR)
-    complexity_canvas.grid(row=0,column=1,padx=20,pady=(20,5),sticky="nsew")
-
-    complex_label = tk.Label(complexity_canvas,image=complex_icon, text="Complexity Classes",
-                               font=middle_font, bg=FADE_COLOR, fg="white",compound="left",padx=10)
+    complex_label = tk.Label(complexity_frame, image=complex_icon, text="Complexity Classes",
+                             font=middle_font, bg=FADE_COLOR, fg="white",
+                             compound="left", padx=10)
     complex_label.pack(anchor="nw", padx=5, pady=2)
     complex_label.image = complex_icon
 
-    complex_small_label = tk.Label(complexity_canvas, text="Best to worst case in descending",
-                               font=small_font, bg=FADE_COLOR, fg="white")
+    complex_small_label = tk.Label(complexity_frame, text="Best to worst case in descending",
+                                   font=small_font, bg=FADE_COLOR, fg="white")
     complex_small_label.pack(anchor="nw", padx=5, pady=2)
 
+    divider = tk.Frame(complexity_frame, bg="gray", height=1)
+    divider.pack(fill="x", pady=(0, 10))
 
-    divider = tk.Frame(complexity_canvas, bg="gray", height=1, width=200)
-    divider.pack(anchor="nw", pady=(0, 10))
+    complexity_canvas = tk.Canvas(complexity_frame, bg=FADE_COLOR, highlightthickness=0)
+    complexity_canvas.pack(fill="both", expand=True)
+    populate_complex_classes(complexity_canvas, small_font=small_font, title_font=smallmid_font)
 
-    populate_complex_classes(complexity_canvas,small_font=small_font,title_font=smallmid_font)
-    
-
+    # Configure grid weights so both columns/rows expand evenly
     parent_frame.grid_columnconfigure(0, weight=1)
     parent_frame.grid_columnconfigure(1, weight=1)
     parent_frame.grid_rowconfigure(0, weight=1)
+    parent_frame.grid_rowconfigure(1, weight=1)
