@@ -17,6 +17,7 @@ def populate_complex_classes(canvas,small_font, title_font):
     y_start =70
     line_height = 25
     FRAME_COLOR = "#0B1D3A"
+
     def add_header(text, y):
         text_id = canvas.create_text(
             x_pad, y,
@@ -162,10 +163,18 @@ def create_nodes_ui_algo(parent_frame):
 
     # --- N VS NP Section ---
 
-    n_np_canvas = tk.Canvas(parent_frame,width=400, height=200, bg=FADE_COLOR)
-    n_np_canvas.grid(row=1,column=0,padx=20,pady=(20,5), sticky="nsew")
+    n_np_canvas = tk.Canvas(parent_frame, width=200, height=200, bg=FADE_COLOR)
+    n_np_canvas.grid(row=1, column=0, padx=20, pady=(20, 5), sticky="nsew")
 
+    n_np_frame = tk.Frame(n_np_canvas, bg=FADE_COLOR)
+    n_np_canvas.create_window((2, 2), window=n_np_frame, anchor="nw")
 
+    n_np_label = tk.Label(n_np_frame, text="N vs NP", font=middle_font, bg=FADE_COLOR, fg="white")
+    n_np_label.pack(anchor="nw", padx=5, pady=2)
+
+    n_np_desc = tk.Label(n_np_frame, text="P problems: You can find the answer quickly\nNP problems: You can check the answer quickly, but finding it may take exponential time.",
+                        font=small_font, bg=FADE_COLOR, fg="white", justify="left")
+    n_np_desc.pack(anchor="nw", padx=5, pady=2)
 
     
 

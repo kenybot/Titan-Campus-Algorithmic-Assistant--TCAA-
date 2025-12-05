@@ -47,12 +47,24 @@ def show_tasks(output_text):
         task_value = value.get()
         output_text.insert(tk.END, f"Task {i}: {task_name}, Time: {task_time}, Value: {task_value}\n")
 
-def run_scheduler(output_text, available_time):
+def run_scheduler(output_text, available_time_entry):
+    try:
+        available_time = int(available_time_entry.get())
+    except ValueError:
+        messagebox.showerror("Error", "Please enter a valid number for available time.")
+        return
+
     tasks = []
     for name, time, value in task_entries:
-        task_name = name.get().strip()
-        task_time = time.get().strip()
-        task_value = value.get().strip()
+
+        if not str(name):
+            continue
+        try:
+            task_name = name.get().strip()
+            task_time = time.get().strip()
+            task_value = value.get().strip()
+        except tk.TclError:
+            continue
 
         # Only add valid tasks
         if task_name and task_time.isdigit() and task_value.isdigit():
@@ -144,7 +156,7 @@ def create_nodes_ui_planner(parent_frame):
 
     tk.Button(input_frame, text="+ Add Task", command=lambda: add_task_row(input_frame,middle_font),bg=FRAME_COLOR,fg="white").grid(row=999, column=0, columnspan=3, pady=10)
     tk.Button(input_frame, text=" Clear Tasks", command=lambda:clear_tasks(input_frame,middle_font),bg=FRAME_COLOR,fg="white").grid(row=999, column=1, columnspan=3, pady=10)
-    tk.Button(input_frame, text=" Run Greedy Scheduler",command=lambda: run_scheduler(output_text,int(available_time.get())),bg=FRAME_COLOR,fg="white").grid(row=1000, column=0, columnspan=3, pady=10)
+    tk.Button(input_frame, text=" Run Greedy Scheduler",command=lambda: run_scheduler(output_text,available_time),bg=FRAME_COLOR,fg="white").grid(row=1000, column=0, columnspan=3, pady=10)
     tk.Button(input_frame, text=" Run Knapsack",command=lambda: run_knapsack(output_text,available_time),bg=FRAME_COLOR,fg="white").grid(row=1000, column=1, columnspan=3, pady=10)
     add_task_row(input_frame,middle_font)
     add_task_row(input_frame,middle_font)
