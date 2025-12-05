@@ -12,7 +12,6 @@ tasks = [
     {"name": "Work on Project Draft", "time": 120, "value": 100}
 ]
 
-
 def greedy_scheduler(tasks,available_time):
     chosen =[]
     total_time =0
@@ -27,9 +26,6 @@ def greedy_scheduler(tasks,available_time):
             total_value += task["value"]
             total_time += task["time"]
     return chosen, total_time, total_value
-
-
-    
 
 
 if __name__ == "__main__":

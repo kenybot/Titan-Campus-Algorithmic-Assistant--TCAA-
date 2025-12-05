@@ -4,7 +4,7 @@ from PIL import Image, ImageTk
 
 from backend.campus_navigator import ui_helpers
 from backend.algo_info import create_nodes
-from backend.study_planner import create_nodes_ui_planner
+from backend.study_planner import create_planner
 from backend.home import home
 from winsound import *
 #sounds
@@ -179,14 +179,18 @@ class Content(tk.Frame):
     def show_navigation(self):
         self.clear_body()
         ui_helpers.create_nodes_ui(self.body,self.FADE_COLOR,small_font=self.small_font)
+        print("moved to navigation")
     def show_planner(self):
         self.clear_body()
-        study_planner.create_nodes_ui_planner(self.body)
+        create_planner.create_nodes_ui_planner(self.body)
+        print("moved to planner")
     def show_notes_search(self):
         self.clear_body()
+        print("moved to notes_search")
     def show_algo_info(self):
         self.clear_body()
         create_nodes.create_nodes_ui_algo(self.body)
+        print("moved to algo info")
     def show_home(self):
         self.clear_body()
         home.create_home_ui(self.body, self.FRAME_COLOR, small_font=self.small_font)
@@ -197,6 +201,7 @@ class App(tk.Tk):
         self.title("TCAA")
         self.resizable(False, False)
         self.geometry("1280x720")
+        self.configure(bg="#0B1D3A")
        
         # Build layout
 
