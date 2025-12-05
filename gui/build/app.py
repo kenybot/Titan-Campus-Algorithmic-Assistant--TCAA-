@@ -148,6 +148,7 @@ class Content(tk.Frame):
     def __init__(self, master, **kwargs):
         super().__init__(master, width=1095, height=720, bg="#E5D9D9", **kwargs)
         self.pack(side=tk.RIGHT, fill="both", expand=True)
+        
 
         bg_img = Image.open("gui/build/assets/frame0/fall-vector.png")
         bg_img = bg_img.resize((1095,720))
@@ -159,6 +160,7 @@ class Content(tk.Frame):
         self.WHITE_COLOR = "#E5D9D9"
 
         # Fonts
+        self.clock_font = tkFont.Font(family="Museo Sans 900", size=50, weight="bold")
         self.title_font = tkFont.Font(family="Museo Sans 900", size=18, weight="bold")
         self.middle_font = tkFont.Font(family="Museo Sans 700", size=16, weight="bold")
         self.small_font = tkFont.Font(family="Museo Sans 100", size=10)
@@ -193,7 +195,7 @@ class Content(tk.Frame):
         print("moved to algo info")
     def show_home(self):
         self.clear_body()
-        home.create_home_ui(self.body, self.FRAME_COLOR, small_font=self.small_font)
+        home.create_home_ui(self.body, self.FRAME_COLOR, self.clock_font)
 
 class App(tk.Tk):
     def __init__(self):

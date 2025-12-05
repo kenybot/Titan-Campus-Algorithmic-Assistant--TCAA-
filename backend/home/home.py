@@ -13,15 +13,19 @@ def update_time(time_label,parent_frame):
         parent_frame.after(1000, update_time, time_label, parent_frame)
 
 
-def create_home_ui(parent_frame, fade_color, small_font):
+def create_home_ui(parent_frame, fade_color, clock_font):
 
 
-    canvas = tk.Canvas(parent_frame, width=200,height=300, bg=fade_color)
-    canvas.grid(row=0,column=0,padx=20,pady=(20,5))
+    canvas = tk.Canvas(parent_frame, width=1000, height=100, bg=fade_color)
+    canvas.place(relx=0.5, rely=0.5, anchor="center")
+
+    canvas_width = 1000
+    canvas_height = 100
+
 
     current_time = get_time()
-    time_label = tk.Label(canvas,text=current_time,font=small_font,fg="white",justify="center",bg=fade_color)
-    canvas.create_window(100, 10, window=time_label, anchor="n")
+    time_label = tk.Label(canvas,text=current_time,font=clock_font,fg="white",justify="center",bg=fade_color)
+    canvas.create_window(canvas_width/2,canvas_height/2, window=time_label, anchor="center")
 
     
     update_time(time_label,parent_frame)
