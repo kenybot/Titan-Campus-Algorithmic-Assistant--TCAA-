@@ -179,7 +179,7 @@ def create_nodes_ui_algo(parent_frame):
     complex_label.pack(anchor="nw", padx=5, pady=2)
     complex_label.image = complex_icon
 
-    complex_small_label = tk.Label(complexity_canvas, text="Best to worst case in descending order",
+    complex_small_label = tk.Label(complexity_canvas, text="Best to worst case in descending",
                                font=small_font, bg=FADE_COLOR, fg="white")
     complex_small_label.pack(anchor="nw", padx=5, pady=2)
 

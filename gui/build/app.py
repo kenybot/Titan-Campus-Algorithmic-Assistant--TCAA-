@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 
 from backend.campus_navigator import ui_helpers
 from backend.algo_info import create_nodes
+from backend.study_planner import create_nodes_ui_planner
 from backend.home import home
 from winsound import *
 #sounds
@@ -180,6 +181,7 @@ class Content(tk.Frame):
         ui_helpers.create_nodes_ui(self.body,self.FADE_COLOR,small_font=self.small_font)
     def show_planner(self):
         self.clear_body()
+        study_planner.create_nodes_ui_planner(self.body)
     def show_notes_search(self):
         self.clear_body()
     def show_algo_info(self):
