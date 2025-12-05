@@ -226,7 +226,7 @@ def create_nodes_ui(parent_frame,fade_color,small_font):
 
 
     # NodeManager
-    manager = NodeManager(canvas)
+    manager = NodeManager(canvas,output_canvas)
 
     accessible_chk = tk.Checkbutton(
         parent_frame,

@@ -18,6 +18,18 @@ def knapsack(list,available_time):
 
     dp = [[0] * (available_time + 1) for _ in range(n+1)]
 
+    """ VIsualization for this for me
+    EXAMPLE
+    dp = [[0] * 6 for _ in range(4)]
+    [
+    [0, 0, 0, 0, 0, 0],  # row 0 (no tasks)
+    [0, 0, 0, 0, 0, 0],  # row 1 (task 1 considered)
+    [0, 0, 0, 0, 0, 0],  # row 2 (task 2 considered)
+    [0, 0, 0, 0, 0, 0]   # row 3 (task 3 considered)
+    ]
+    
+    """
+
 
 
 

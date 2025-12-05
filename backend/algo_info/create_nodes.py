@@ -14,17 +14,38 @@ def resize_image(png_file, size=(20, 20)):
         
 def populate_complex_classes(canvas,small_font, title_font):
     x_pad = 10
-    y_start =30
+    y_start =70
     line_height = 25
-
+    FRAME_COLOR = "#0B1D3A"
     def add_header(text, y):
-        canvas.create_text(x_pad, y, text=text, font=title_font, fill="white", anchor="nw")
+        text_id = canvas.create_text(
+            x_pad, y,
+            text=text, font=title_font, fill="white", anchor="nw"
+        )
+        x1, y1, x2, y2 = canvas.bbox(text_id)
+        canvas.create_rectangle(x1, y1, x2, y2,outline="")
+        canvas.tag_raise(text_id)
         return y + line_height
+
 
     def add_entry(text, y):
         entry = text
         canvas.create_text(x_pad + 15, y+2, text=entry, font=small_font, fill="white", anchor="nw")
         return y + line_height
+    
+
+    def add_entry(text, y):
+        entry = text
+        # canvas.create_text(x_pad + 20, y+2, text=entry, font=small_font, fill="white", anchor="nw")
+        text_id = canvas.create_text(
+            x_pad, y,
+            text=entry, font=small_font, fill="white", anchor="nw"
+        )
+        x1, y1, x2, y2 = canvas.bbox(text_id)
+        canvas.create_rectangle(x1, y1, x2, y2, fill=FRAME_COLOR, outline=FRAME_COLOR,width=1)
+        canvas.tag_raise(text_id)
+        return y + line_height
+
     
 
     y = y_start
@@ -50,17 +71,32 @@ def populate_complex_classes(canvas,small_font, title_font):
      
 
 def populate_time_complexities(canvas, small_font, title_font):
+    FRAME_COLOR = "#0B1D3A"
     x_pad = 10
     y_start = 70
     line_height = 25
 
     def add_header(text, y):
-        canvas.create_text(x_pad, y, text=text, font=title_font, fill="white", anchor="nw")
+        text_id = canvas.create_text(
+            x_pad, y,
+            text=text, font=title_font, fill="white", anchor="nw"
+        )
+        x1, y1, x2, y2 = canvas.bbox(text_id)
+        canvas.create_rectangle(x1, y1, x2, y2, outline="")
+        canvas.tag_raise(text_id)
         return y + line_height
+
 
     def add_entry(name, time, space, y):
         entry = f"{name}: Time: {time}, Space: {space}"
-        canvas.create_text(x_pad + 20, y+2, text=entry, font=small_font, fill="white", anchor="nw")
+        # canvas.create_text(x_pad + 20, y+2, text=entry, font=small_font, fill="white", anchor="nw")
+        text_id = canvas.create_text(
+            x_pad, y,
+            text=entry, font=title_font, fill="white", anchor="nw"
+        )
+        x1, y1, x2, y2 = canvas.bbox(text_id)
+        canvas.create_rectangle(x1, y1, x2, y2, fill=FRAME_COLOR, outline=FRAME_COLOR,width=1)
+        canvas.tag_raise(text_id)
         return y + line_height
 
     y = y_start
@@ -142,6 +178,14 @@ def create_nodes_ui_algo(parent_frame):
                                font=middle_font, bg=FADE_COLOR, fg="white",compound="left",padx=10)
     complex_label.pack(anchor="nw", padx=5, pady=2)
     complex_label.image = complex_icon
+
+    complex_small_label = tk.Label(complexity_canvas, text="Best to worst case in descending order",
+                               font=small_font, bg=FADE_COLOR, fg="white")
+    complex_small_label.pack(anchor="nw", padx=5, pady=2)
+
+
+    divider = tk.Frame(complexity_canvas, bg="gray", height=1, width=200)
+    divider.pack(anchor="nw", pady=(0, 10))
 
     populate_complex_classes(complexity_canvas,small_font=small_font,title_font=smallmid_font)
     

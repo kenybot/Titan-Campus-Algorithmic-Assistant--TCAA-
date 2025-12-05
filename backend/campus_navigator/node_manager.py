@@ -7,7 +7,8 @@ import random
 from heapq import heappush, heappop
 
 class NodeManager:
-    def __init__(self,canvas):
+    def __init__(self,canvas,output_canvas):
+        self.output_canvas = output_canvas
         self.canvas = canvas
         self.nodes = []
         self.selected_nodes = []
@@ -58,8 +59,8 @@ class NodeManager:
 
 
     def display_output(self,message):
-        self.canvas.master.children['!canvas2'].delete("all")
-        self.canvas.master.children['!canvas2'].create_text(
+        self.output_canvas.delete("all")
+        self.output_canvas.create_text(
             10,10, anchor="nw", text=message,fill="white",font=("Helvectica",10, "bold")
         )
 
